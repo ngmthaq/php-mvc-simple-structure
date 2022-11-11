@@ -1,6 +1,6 @@
 <?php
 
-model();
+importModel();
 
 class User extends Model
 {

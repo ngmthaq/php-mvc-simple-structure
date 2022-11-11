@@ -1,6 +1,6 @@
 <?php
 
-model("user");
+importModel("user");
 
 class IndexController
 {
