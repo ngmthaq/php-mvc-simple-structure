@@ -3,6 +3,8 @@
 /storages/**/*
 !/storages/.gitkeep
 /public/libs
+/public/css
+/public/js
 composer.lock
 package-lock.json
 .env
