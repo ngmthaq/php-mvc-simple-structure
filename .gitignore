@@ -1,0 +1,8 @@
+/node_modules
+/vendor
+/storages/**/*
+!/storages/.gitkeep
+/public/libs
+composer.lock
+package-lock.json
+.env

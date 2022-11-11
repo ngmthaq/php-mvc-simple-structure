@@ -1,0 +1,29 @@
+{
+  "name": "speed/sphp",
+  "description": "Simple PHP Project",
+  "type": "project",
+  "license": "MIT",
+  "autoload": {
+    "psr-4": {
+      "Controllers\\": "controllers/",
+      "Database\\": "database/",
+      "Models\\": "models/",
+      "Repositories\\": "repositories/",
+      "Helpers\\": "helpers/"
+    },
+    "files": [
+      "constants.php"
+    ]
+  },
+  "authors": [
+    {
+      "name": "ngmthaq",
+      "email": "nguyenmanhthang2000.fb@gmail.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "jenssegers/blade": "dev-master",
+    "vlucas/phpdotenv": "5.5.x-dev"
+  }
+}

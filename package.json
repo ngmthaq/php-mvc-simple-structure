@@ -1,0 +1,22 @@
+{
+  "name": "sphp",
+  "version": "1.0.0",
+  "description": "Simple PHP Project",
+  "main": "public/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --config webpack.config.js && npx sass resources/scss/index.scss public/css/index.css",
+    "dev": "webpack --config webpack.config.js --watch",
+    "scss": "npx sass resources/scss/index.scss public/css/index.css --watch"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "sass": "^1.56.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^4.10.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.21"
+  }
+}
