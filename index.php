@@ -3,7 +3,7 @@
 session_start();
 
 require_once("./env.php");
-require_once("./src/helpers/index.php");
+require_once("./helpers.php");
 
 try {
     $controllerDir = "./src/controllers/";
