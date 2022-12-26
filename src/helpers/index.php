@@ -193,3 +193,8 @@ function uploadFile(mixed $file, string $dir = "public/img"): string
 
     return move_uploaded_file($tmpFile, "$dir/$finalFileName") ? "/$dir/$finalFileName" : "";
 }
+
+function root(string $path = ""): void
+{
+    echo "." . $path . "?v=" . time();
+}
