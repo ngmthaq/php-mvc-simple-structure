@@ -1,9 +1,15 @@
 <?php
 
+importController();
 importModel("user");
 
-class IndexController
+class IndexController extends Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     public function index()
     {
         $userModel = new User();
@@ -14,6 +20,8 @@ class IndexController
 
     public function test()
     {
-        echo "test";
+        echo $this->getAuth() ? "Auth" : "Guest";
+        echo PHP_EOL;
+        echo $_GET["query"];
     }
 }

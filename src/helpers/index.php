@@ -1,33 +1,66 @@
 <?php
 
-function view(string $_path, array $_data = [])
+function view(string $_path, array $_data = []): void
 {
-    foreach ($_data as $_key => $_value) {
-        $$_key = $_value;
-    }
+    if (file_exists("./src/views" . $_path)) {
+        foreach ($_data as $_key => $_value) {
+            $$_key = $_value;
+        }
 
-    include_once("./src/views" . $_path);
+        include_once("./src/views" . $_path);
+    } else {
+        throw new Exception("VIEW NOT FOUND");
+    }
 }
 
-function component($_path, array $_data = [])
+function component(string $_path, array $_data = []): void
 {
-    foreach ($_data as $_key => $_value) {
-        $$_key = $_value;
-    }
+    if (file_exists("./src/views/components" . $_path)) {
+        foreach ($_data as $_key => $_value) {
+            $$_key = $_value;
+        }
 
-    include("./src/views/components" . $_path);
+        include("./src/views/components" . $_path);
+    } else {
+        throw new Exception("COMPONENT NOT FOUND");
+    }
 }
 
-function importModel(string $name = "")
+function importModel(string $name = ""): void
 {
     if ($name === "") {
-        include_once("./src/models/model.php");
+        if (file_exists("./src/models/model.php")) {
+            include_once("./src/models/model.php");
+        } else {
+            throw new Exception("MODEL NOT FOUND");
+        }
     } else {
-        include_once("./src/models/$name.model.php");
+        if (file_exists("./src/models/$name.model.php")) {
+            include_once("./src/models/$name.model.php");
+        } else {
+            throw new Exception("MODEL NOT FOUND");
+        }
     }
 }
 
-function clog(mixed $output, bool $withScriptTags = true, bool $forceEncode = true)
+function importController(string $name = ""): void
+{
+    if ($name === "") {
+        if (file_exists("./src/controllers/controller.php")) {
+            include_once("./src/controllers/controller.php");
+        } else {
+            throw new Exception("CONTROLLER NOT FOUND");
+        }
+    } else {
+        if (file_exists("./src/controllers/$name.controller.php")) {
+            include_once("./src/controllers/$name.controller.php");
+        } else {
+            throw new Exception("CONTROLLER NOT FOUND");
+        }
+    }
+}
+
+function cl(mixed $output, bool $withScriptTags = true, bool $forceEncode = true): void
 {
     if ($forceEncode) {
         $jsCode = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';
@@ -42,7 +75,22 @@ function clog(mixed $output, bool $withScriptTags = true, bool $forceEncode = tr
     echo $jsCode;
 }
 
-function route(string $controller, string $action, array $query = [])
+function ce(mixed $output, bool $withScriptTags = true, bool $forceEncode = true): void
+{
+    if ($forceEncode) {
+        $jsCode = 'console.error(' . json_encode($output, JSON_HEX_TAG) . ');';
+    } else {
+        $jsCode = 'console.error(' . $output . ');';
+    }
+
+    if ($withScriptTags) {
+        $jsCode = '<script>' . $jsCode . '</script>';
+    }
+
+    echo $jsCode;
+}
+
+function route(string $controller = "", string $action = "", array $query = []): void
 {
     $handleQuery = [];
     foreach ($query as $key => $value) {
@@ -55,7 +103,7 @@ function route(string $controller, string $action, array $query = [])
     echo "?c=$controller&a=$action$queryString";
 }
 
-function redirect(string $controller, string $action, array $query = [])
+function redirect(string $controller = "", string $action = "", array $query = []): void
 {
     $handleQuery = [];
     foreach ($query as $key => $value) {
@@ -68,8 +116,12 @@ function redirect(string $controller, string $action, array $query = [])
     header("Location: ?c=$controller&a=$action$queryString");
 }
 
-function convertUploadFileToB64($file)
+function convertUploadFileToB64(mixed $file): string
 {
+    if (!$file) {
+        throw new Exception("MISSING FILE");
+    }
+
     $fileTmp = $file['tmp_name'];
     $type = pathinfo($fileTmp, PATHINFO_EXTENSION);
     $data = file_get_contents($fileTmp);
@@ -78,8 +130,12 @@ function convertUploadFileToB64($file)
     return $base64;
 }
 
-function convertStringToSlug($string)
+function convertStringToSlug(string $string): string
 {
+    if (!$string) {
+        throw new Exception("MISSING INPUT STRING");
+    }
+
     $search = array(
         '#(à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ)#',
         '#(è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ)#',
@@ -117,11 +173,16 @@ function convertStringToSlug($string)
     $string = preg_replace($search, $replace, $string);
     $string = preg_replace('/(-)+/', '-', $string);
     $string = strtolower($string);
+
     return $string;
 }
 
-function uploadFile($file, $dir = "public/img")
+function uploadFile(mixed $file, string $dir = "public/img"): string
 {
+    if (!$file || !$dir) {
+        throw new Exception("MISSING FILE OR DIRECTORY");
+    }
+
     $fileName = strtolower(pathinfo($file['name'], PATHINFO_FILENAME));
     $fileExt = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
     $finalFileName = "$fileName.$fileExt";
@@ -130,5 +191,5 @@ function uploadFile($file, $dir = "public/img")
         mkdir($dir);
     }
 
-    return move_uploaded_file($tmpFile, "$dir/$finalFileName") ? "/$dir/$finalFileName" : null;
+    return move_uploaded_file($tmpFile, "$dir/$finalFileName") ? "/$dir/$finalFileName" : "";
 }

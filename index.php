@@ -18,10 +18,16 @@ try {
     if (file_exists($controller)) {
         require_once($controller);
         $con = new $controllerName();
-        $con->$action();
+        if (method_exists($con, $action)) {
+            $con->$action();
+        } else {
+            require_once("./src/views/errors/_404.php");
+        }
     } else {
         require_once("./src/views/errors/_404.php");
     }
 } catch (\Throwable $th) {
+    ce($th->getMessage());
+    ce($th->getTraceAsString());
     require_once("./src/views/errors/_500.php");
 }

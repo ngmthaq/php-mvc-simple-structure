@@ -9,7 +9,7 @@ class User extends Model
         parent::__construct();
     }
 
-    public function setName()
+    public function setName(): string
     {
         return "users";
     }

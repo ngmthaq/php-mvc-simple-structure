@@ -19,9 +19,9 @@ abstract class Model
         $this->db->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     }
 
-    abstract public function setName();
+    abstract public function setName(): string;
 
-    final public function getter($name)
+    final public function getter(string $name): mixed
     {
         if (property_exists($this, $name)) {
             return $this->$name;
@@ -30,7 +30,7 @@ abstract class Model
         return null;
     }
 
-    final public function all()
+    final public function all(): array
     {
         $stm = $this->db->prepare("SELECT * FROM " . $this->name);
         $stm->execute();
@@ -38,7 +38,7 @@ abstract class Model
         return $stm->fetchAll();
     }
 
-    final public function first()
+    final public function first(): mixed
     {
         $stm = $this->db->prepare("SELECT * FROM " . $this->name . " LIMIT 1");
         $stm->execute();
@@ -46,7 +46,7 @@ abstract class Model
         return $stm->fetch();
     }
 
-    final public function last()
+    final public function last(): mixed
     {
         $stm = $this->db->prepare("SELECT * FROM " . $this->name . " ORDER BY id DESC LIMIT 1");
         $stm->execute();
