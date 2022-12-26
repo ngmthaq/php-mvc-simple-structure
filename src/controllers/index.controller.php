@@ -15,7 +15,7 @@ class IndexController extends Controller
         $userModel = new User();
         $user = $userModel->first();
 
-        return view("/homepage/index.php", compact("user"));
+        return view("/page/index.php", compact("user"));
     }
 
     public function test()
